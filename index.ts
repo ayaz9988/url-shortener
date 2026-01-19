@@ -1,7 +1,7 @@
 import { Hono } from "hono";
 import { auth } from "./src/lib/auth";
 import { cors } from "hono/cors";
-import authRoute from "./src/route/v1/auth";
+import authRoute from "./src/routes/v1/auth";
 
 const app = new Hono<{
 	Variables: {
