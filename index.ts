@@ -1,6 +1,7 @@
 import { Hono } from "hono";
 import { auth } from "./src/lib/auth";
 import { cors } from "hono/cors";
+import authRoute from "./src/route/v1/auth";
 
 const app = new Hono<{
 	Variables: {
@@ -25,7 +26,7 @@ app.use("*", async (c, next) => {
 });
 
 app.use(
-	"/api/auth/*", // or replace with "*" to enable cors for all routes
+	"*", // or replace with "*" to enable cors for all routes
 	cors({
 		origin: process.env.BETTER_AUTH_URL!,
 		allowHeaders: ["Content-Type", "Authorization"],
@@ -38,21 +39,7 @@ app.use(
 
 app.get("/", (c) => c.text(`server time is : ${new Date()}`));
 
-app.on(["POST", "GET"], "/api/auth/*", (c) => {
-	return auth.handler(c.req.raw);
-});
-
-app.get("/session", (c) => {
-	const session = c.get("session")
-	const user = c.get("user")
-	
-	if(!user) return c.body(null, 401);
-
-  	return c.json({
-	  session,
-	  user
-	});
-});
+app.route("/", authRoute);
 
 export default {
   port: 3000,
