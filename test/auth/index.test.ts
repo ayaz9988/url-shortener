@@ -1,7 +1,7 @@
 import { describe, it, expect, beforeEach, vi } from "bun:test";
-import authRoute from "./index";
 import { Hono } from "hono";
-import auth from "../../../lib/auth";
+import auth from "../../src/lib/auth";
+import authRoute from "../../src/routes/v1/auth";
 
 // Create a test app that includes the auth routes
 const createApp = () => {
